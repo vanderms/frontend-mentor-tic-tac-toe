@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/frontend-mentor-tic-tac-toe/static/css/main.a5e0c4e3.css",
+    "main.js": "/frontend-mentor-tic-tac-toe/static/js/main.de451afe.js",
+    "static/js/787.393238a3.chunk.js": "/frontend-mentor-tic-tac-toe/static/js/787.393238a3.chunk.js",
+    "index.html": "/frontend-mentor-tic-tac-toe/index.html",
+    "main.a5e0c4e3.css.map": "/frontend-mentor-tic-tac-toe/static/css/main.a5e0c4e3.css.map",
+    "main.de451afe.js.map": "/frontend-mentor-tic-tac-toe/static/js/main.de451afe.js.map",
+    "787.393238a3.chunk.js.map": "/frontend-mentor-tic-tac-toe/static/js/787.393238a3.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.a5e0c4e3.css",
+    "static/js/main.de451afe.js"
+  ]
+}
