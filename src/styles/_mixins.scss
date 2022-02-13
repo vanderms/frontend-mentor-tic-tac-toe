@@ -1,0 +1,53 @@
+@use 'sass:map';
+@use 'sass:math';
+
+@function rem($px) {
+  $html-font-size: 16;
+  @return #{math.div($px, $html-font-size)}rem;
+}
+
+$breakpoints: (
+  small-mobile: rem(350),
+  mobile: rem(720),
+  tablet: rem(1200),
+  laptop: rem(1440),
+);
+
+@mixin media($size) {
+  $breakpoint: map.get($breakpoints, $size);
+  @media screen and (max-width: $breakpoint) {
+    @content;
+  }
+}
+
+@mixin media-only-tablet() {
+  $md: map.get($breakpoints, mobile);
+  $lg: map.get($breakpoints, tablet);
+  @media screen and (min-width: calc($md + 1px)) and (max-width: $lg) {
+    @content;
+  }
+}
+
+@mixin size($width, $height) {
+  width: $width;
+  height: $height;
+}
+
+$desktop-container-width: rem(1110);
+$tablet-container-width: rem(690);
+$mobile-container-width: 87.2%;
+
+@mixin container() {
+ width: $desktop-container-width;
+ margin-left: auto;
+ margin-right: auto;
+
+ @include media(tablet){
+   width: $tablet-container-width;
+ }
+
+ @include media(tablet){
+   width: $mobile-container-width;
+ }
+}
+
