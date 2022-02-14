@@ -1,12 +1,10 @@
 import React from 'react';
+import NewGame from './jsx/sections/new-game';
 
-
-function App() {
+export default function App() {
   return (
-    <>
-    Is it working?
-    </>
+    <main>
+      <NewGame />
+    </main>
   );
 }
-
-export default App;

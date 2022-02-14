@@ -1,7 +1,11 @@
+@use './mixins' as *;
+
 *, *::after, *::before{
   margin: 0;
   padding: 0;
-  box-sizing: border-box;  
+  box-sizing: border-box; 
+  font-family: 'Outfit', sans-serif;
+  font-weight: 500; 
 }
 
 a{
@@ -13,3 +17,14 @@ ul{
   list-style-type: none;
 }
 
+body{
+  background-color: $dark-navy;
+}
+
+main{
+  @include size(100%, 100vh);
+  min-height: rem(570);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

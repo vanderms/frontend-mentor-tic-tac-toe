@@ -1,0 +1,143 @@
+@use './mixins' as *;
+
+.section-new-game-root {
+  @include size(rem(460), rem(471));
+
+  @include media(mobile){
+    @include size(87.2%, rem(429));
+  }
+
+  .logo-container {
+    display: flex;
+    justify-content: center;
+
+    .logo {
+      @include size(auto, rem(32));
+    }
+  }
+
+  .pick-mark {
+    margin-top: rem(40);
+    @include size(100%, rem(205));
+    background-color: $semi-dark-navy;
+    box-shadow: inset 0px -8px 0px #10212a;
+    border-radius: rem(15);
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+    @include media(mobile){
+      margin-top: rem(32);
+    }
+  }
+
+  .title {
+    margin-top: rem(24);
+    font-size: rem(16);
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: $silver;
+  }
+
+  .choice {
+    margin-top: rem(24);
+    @include size(rem(412), rem(72));
+    padding: rem(9) rem(8);
+    background-color: $dark-navy;
+    border-radius: rem(10);
+    display: flex;
+    justify-content: space-between;
+
+    @include media(mobile){
+      width: calc(100% - rem(48));
+    }
+
+    input {
+      position: absolute;
+      padding: 0;
+      opacity: 0;
+      display: block;
+    }
+
+    label {
+      @include size(50%, 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+
+      .icon {
+        transform: scale(0.5);
+        transform-origin: center center;
+
+        path {
+          fill: $silver;
+        }
+      }
+    }
+
+    input:checked + label {
+      background-color: $silver;
+      border-radius: rem(10);
+      .icon path {
+        fill: $dark-navy;
+      }
+    }
+  }
+
+  .pick-mark .note {
+    margin-top: rem(17);
+    font-size: rem(14);
+    color: $silver;
+    opacity: 0.5;
+    letter-spacing: 0.875px;
+  }
+
+  .start-game-buttons {
+    margin-top: rem(40);
+    display: flex;
+    flex-direction: column;
+    gap: rem(20);
+
+    @include media(mobile){
+      margin-top: rem(32);
+      gap: rem(16);
+    }
+
+    .button {
+      @include size(100%, rem(67));
+      border-radius: rem(15);
+      cursor: pointer;
+      border: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      @include media(mobile){
+        height: rem(56);
+      }
+
+      span {
+        font-weight: bold;
+        font-size: 20px;      
+        letter-spacing: 1.25px;
+        color: $dark-navy;
+        margin-top: rem(-4);
+
+        @include media(mobile){
+          font-size: rem(16);
+        }
+      }
+
+      &.vs-cpu {
+        background: #f2b137;
+        box-shadow: inset 0px -8px 0px #cc8b13;
+      }
+
+      &.vs-player {
+        background: #31c3bd;
+        box-shadow: inset 0px -8px 0px #118c87;
+      }
+    }
+  }
+}
