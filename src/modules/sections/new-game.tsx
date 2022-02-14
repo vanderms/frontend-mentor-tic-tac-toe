@@ -11,12 +11,12 @@ export default function NewGame() {
       <div className="pick-mark">
         <h1 className='title'>PICK PLAYER 1'S MARK</h1>
         <div className="choice">
-          <input type="radio" id="choose-x" value="choose-x" name="pick-mark" />
-          <label htmlFor="choose-x">
+          <input type="radio" id="choose-x" value="mark x" name="pick-mark" />
+          <label htmlFor="choose-x" aria-label='choose mark x'>
             <IconX />
           </label>
-          <input type="radio" id="choose-o" value="choose-o" name="pick-mark" />
-          <label htmlFor="choose-o">
+          <input type="radio" id="choose-o" value="mark o" name="pick-mark" />
+          <label htmlFor="choose-o" aria-label='choose mark o'>
             <IconO />
           </label>
         </div>
