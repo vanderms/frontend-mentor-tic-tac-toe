@@ -1,10 +1,13 @@
 import React from 'react';
 import NewGame from './modules/sections/new-game';
+import PlayerProvider from './contexts/players';
 
 export default function App() {
   return (
     <main>
-      <NewGame />
+      <PlayerProvider>
+        <NewGame />
+      </PlayerProvider>
     </main>
   );
 }

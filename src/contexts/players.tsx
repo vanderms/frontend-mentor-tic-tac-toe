@@ -15,17 +15,15 @@ enum ActionType {
 
 interface IPLayerAction {
   type: ActionType;
-  payload: Opponent | Mark;
+  payload: string;
 }
 
 interface IPlayerContext extends IPlayerState {
-  setMark?: (mark: Mark) => void;
-  setOpponent?: (opponent: Opponent) => void;
+  setMark?: (mark: string) => void;
+  setOpponent?: (opponent: string) => void;
 }
 
 const InitialState: IPlayerState = { mark: 'O', opponent: 'CPU' };
-
-const PlayerContext = createContext<IPlayerContext>(InitialState);
 
 const reducer = (state: IPlayerState, action: IPLayerAction): IPlayerState => {
   let error: string | null = null;
@@ -35,29 +33,31 @@ const reducer = (state: IPlayerState, action: IPLayerAction): IPlayerState => {
       if (action.payload === 'X' || action.payload === 'O') {
         return { ...state, mark: action.payload };
       }
-      error = 'incorrect payload';
+      error = 'Incorrect payload.';
       break;
     case ActionType.SET_OPPONENT:
       if (action.payload === 'PLAYER' || action.payload === 'CPU') {
-        return { ...state, opponent: action.payload as Opponent };
+        return { ...state, opponent: action.payload };
       }
-      error = 'incorrect payload';
+      error = 'Incorrect payload.';
       break;
     default:
-      error = 'incorrect action';
+      error = 'Incorrect action.';
       break;
   }
   throw Error(error);
 };
 
-export const PlayerProvider: React.FC = ({ children }) => {
+export const PlayerContext = createContext<IPlayerContext>(InitialState);
+
+const PlayerProvider: React.FC = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, InitialState);
 
-  const setMark = (mark: Mark) => {
+  const setMark = (mark: string) => {
     dispatch({ type: ActionType.SET_MARK, payload: mark });
   };
 
-  const setOpponent = (opponent: Opponent) => {
+  const setOpponent = (opponent: string) => {
     dispatch({ type: ActionType.SET_OPPONENT, payload: opponent });
   };
 
@@ -67,3 +67,5 @@ export const PlayerProvider: React.FC = ({ children }) => {
     </PlayerContext.Provider>
   );
 };
+
+export default PlayerProvider;
