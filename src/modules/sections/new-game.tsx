@@ -2,10 +2,14 @@ import Logo from '../../assets/logo.svg';
 import IconX from '../svg/icon-x';
 import IconO from '../svg/icon-o';
 import { useContext } from 'react';
-import { PlayerContext } from '../../contexts/players';
+import { AppContext, ActionType } from '../../contexts/app-context';
 
 export default function NewGame() {
-  const context = useContext(PlayerContext);
+  const { mark, dispatch } = useContext(AppContext);
+
+  const setMark = (e: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch!({ type: ActionType.SET_MARK, payload: e.target.value });
+  };
 
   return (
     <section className="section-new-game-root">
@@ -18,8 +22,8 @@ export default function NewGame() {
           <input
             type="radio"
             id="choose-x"
-            checked={context.mark === 'X'}
-            onChange={(e) => context.setMark!(e.target.value)}
+            checked={mark === 'X'}
+            onChange={setMark}
             value="X"
             name="pick-mark"
           />
@@ -29,8 +33,8 @@ export default function NewGame() {
           <input
             type="radio"
             id="choose-o"
-            onChange={(e) => context.setMark!(e.target.value)}
-            checked={context.mark === 'O'}
+            onChange={setMark}
+            checked={mark === 'O'}
             value="O"
             name="pick-mark"
           />

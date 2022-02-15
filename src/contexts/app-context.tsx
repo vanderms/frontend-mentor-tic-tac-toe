@@ -3,29 +3,28 @@ import { createContext, useReducer } from 'react';
 type Opponent = 'PLAYER' | 'CPU';
 type Mark = 'X' | 'O';
 
-interface IPlayerState {
+interface IState {
   mark: Mark;
   opponent: Opponent;
 }
 
-enum ActionType {
+export enum ActionType {
   SET_MARK = 'SET_MARK',
   SET_OPPONENT = 'SET_OPPONENT',
 }
 
-interface IPLayerAction {
+interface IAction {
   type: ActionType;
   payload: string;
 }
 
-interface IPlayerContext extends IPlayerState {
-  setMark?: (mark: string) => void;
-  setOpponent?: (opponent: string) => void;
+interface IAppContext extends IState {
+  dispatch?: (action: IAction) => void;
 }
 
-const InitialState: IPlayerState = { mark: 'O', opponent: 'CPU' };
+const InitialState: IState = { mark: 'O', opponent: 'CPU' };
 
-const reducer = (state: IPlayerState, action: IPLayerAction): IPlayerState => {
+const reducer = (state: IState, action: IAction): IState => {
   let error: string | null = null;
 
   switch (action.type) {
@@ -48,24 +47,16 @@ const reducer = (state: IPlayerState, action: IPLayerAction): IPlayerState => {
   throw Error(error);
 };
 
-export const PlayerContext = createContext<IPlayerContext>(InitialState);
+export const AppContext = createContext<IAppContext>(InitialState);
 
-const PlayerProvider: React.FC = ({ children }) => {
+const AppProvider: React.FC = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, InitialState);
 
-  const setMark = (mark: string) => {
-    dispatch({ type: ActionType.SET_MARK, payload: mark });
-  };
-
-  const setOpponent = (opponent: string) => {
-    dispatch({ type: ActionType.SET_OPPONENT, payload: opponent });
-  };
-
   return (
-    <PlayerContext.Provider value={{ ...state, setMark, setOpponent }}>
+    <AppContext.Provider value={{ ...state, dispatch }}>
       {children}
-    </PlayerContext.Provider>
+    </AppContext.Provider>
   );
 };
 
-export default PlayerProvider;
+export default AppProvider;

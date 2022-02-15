@@ -1,13 +1,14 @@
 import React from 'react';
 import NewGame from './modules/sections/new-game';
-import PlayerProvider from './contexts/players';
+import AppProvider from './contexts/app-context';
 
-export default function App() {
+export default function App() { 
+  
   return (
     <main>
-      <PlayerProvider>
+      <AppProvider>
         <NewGame />
-      </PlayerProvider>
+      </AppProvider>
     </main>
   );
 }
