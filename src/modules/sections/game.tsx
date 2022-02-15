@@ -13,7 +13,7 @@ export default function Game() {
           <span>TURN</span>
         </div>
         <button className="restart" aria-label="restart game">
-          <img src={Restart} alt="restart icon" />
+          <img src={Restart} className='restart-icon' alt="restart icon" />
         </button>
       </div>
       <div className="table">

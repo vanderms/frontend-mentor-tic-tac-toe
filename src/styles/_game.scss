@@ -1,13 +1,24 @@
 @use './mixins' as *;
 
+$mobile-cell-width: calc((87.2vw - #{rem(40)}) / 3);
+
 .section-game-root {
   @include size(rem(460), rem(623));
+
+  @include media(mobile) {
+    @include size(87.2%, rem(516));
+    margin-top: rem(-95);
+  }
 
   .first-row {
     @include size(100%, rem(52));
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+    @include media(mobile) {
+      height: rem(40);
+    }
   }
 
   .logo {
@@ -19,15 +30,18 @@
     background-color: $semi-dark-navy;
     border-radius: rem(10);
     padding-bottom: 4px;
-
     box-shadow: inset 0px -4px 0px #10212a;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: rem(13);
-
     font-weight: 700;
     color: $silver;
+
+    @include media(mobile) {
+      @include size(rem(96), rem(40));
+      font-size: rem(14);
+    }
 
     &::before {
       content: '';
@@ -36,6 +50,10 @@
       background-repeat: no-repeat;
       background-position: center;
       background-size: cover;
+
+      @include media(mobile) {
+        @include size(rem(16), rem(16));
+      }
     }
   }
 
@@ -46,6 +64,14 @@
     box-shadow: inset 0px -4px 0px #6b8997;
     border-radius: 10px;
     cursor: pointer;
+
+    @include media(mobile) {
+      @include size(rem(40), rem(40));
+
+      .restart-icon {
+        @include size(auto, rem(16));
+      }
+    }
   }
 
   .table {
@@ -54,6 +80,11 @@
     grid-template-columns: repeat(3, rem(140));
     justify-content: space-between;
     gap: rem(20);
+
+    @include media(mobile) {
+      margin-top: rem(64);
+      grid-template-columns: repeat(3, $mobile-cell-width);
+    }
 
     .cell {
       @include size(rem(140), rem(140));
@@ -66,6 +97,10 @@
       display: flex;
       justify-content: center;
       align-items: center;
+
+      @include media(mobile) {
+        @include size($mobile-cell-width, $mobile-cell-width);
+      }
 
       &.inactive:hover::before {
         content: '';
@@ -93,6 +128,10 @@
       border-radius: rem(15);
       color: $dark-navy;
 
+      @include media(mobile) {
+        @include size($mobile-cell-width, rem(64));
+      }
+
       &.score-x {
         background-color: $light-blue;
       }
@@ -106,28 +145,38 @@
 
       .title {
         font-weight: 500;
-        font-size: 14px;
-        line-height: 18px;
+        font-size: rem(14);
+        line-height: rem(18);
         letter-spacing: 0.875px;
+
+        @include media(small-mobile) {
+          font-size: rem(13);
+        }
       }
 
       .value {
         font-weight: 700;
-        font-size: 24px;
-        line-height: 30px;       
+        font-size: rem(24);
+        line-height: rem(30);
         letter-spacing: 1.5px;
         text-transform: uppercase;
+
+        @include media(mobile) {
+          font-size: rem(20);
+          line-height: rem(25);
+          letter-spacing: 1.25px;
+        }
       }
     }
   }
 }
 
-.section-game-root.opponent-turn{
-  .turn::before{
+.section-game-root.opponent-turn {
+  .turn::before {
     background-image: url(/assets/icon-o-silver.svg);
   }
 
-  .table .cell.inactive:hover::before{
+  .table .cell.inactive:hover::before {
     background-image: url(/assets/icon-o-outline.svg);
   }
 }
