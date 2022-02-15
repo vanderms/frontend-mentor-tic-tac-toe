@@ -3,7 +3,7 @@ import { createContext, useReducer } from 'react';
 type Opponent = 'PLAYER' | 'CPU';
 type Mark = 'X' | 'O';
 
-interface IState {
+interface State {
   mark: Mark;
   opponent: Opponent;
 }
@@ -13,38 +13,34 @@ export enum ActionType {
   SET_OPPONENT = 'SET_OPPONENT',
 }
 
-interface IAction {
+interface Action {
   type: ActionType;
   payload: string;
 }
 
-interface IAppContext extends IState {
-  dispatch?: (action: IAction) => void;
+interface IAppContext extends State {
+  dispatch?: (action: Action) => void;
 }
 
-const InitialState: IState = { mark: 'O', opponent: 'CPU' };
+const InitialState: State = { mark: 'O', opponent: 'CPU' };
 
-const reducer = (state: IState, action: IAction): IState => {
-  let error: string | null = null;
+const reducer = (state: State, action: Action): State => {
+  const { type, payload } = action;
 
-  switch (action.type) {
+  switch (type) {
     case ActionType.SET_MARK:
-      if (action.payload === 'X' || action.payload === 'O') {
-        return { ...state, mark: action.payload };
-      }
-      error = 'Incorrect payload.';
-      break;
+      if (payload === 'X' || payload === 'O') {
+        return { ...state, mark: payload };
+      } else return state;
+
     case ActionType.SET_OPPONENT:
-      if (action.payload === 'PLAYER' || action.payload === 'CPU') {
-        return { ...state, opponent: action.payload };
-      }
-      error = 'Incorrect payload.';
-      break;
+      if (payload === 'PLAYER' || payload === 'CPU') {
+        return { ...state, opponent: payload };
+      } else return state;
+
     default:
-      error = 'Incorrect action.';
-      break;
+      return state;
   }
-  throw Error(error);
 };
 
 export const AppContext = createContext<IAppContext>(InitialState);

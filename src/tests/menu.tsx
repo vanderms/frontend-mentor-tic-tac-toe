@@ -1,7 +1,7 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import App from '../app';
 
-describe('test new game section inputs and buttons', () => {
+describe('test new game menu section inputs and buttons', () => {
   it('should initialize "mark o" input checked', () => {
     render(<App />);
     const oRadio = screen.getByRole('radio', { name: 'choose mark o' });

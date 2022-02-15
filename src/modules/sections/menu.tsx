@@ -4,7 +4,7 @@ import IconO from '../svg/icon-o';
 import { useContext } from 'react';
 import { AppContext, ActionType } from '../../contexts/app-context';
 
-export default function NewGame() {
+export default function Menu() {
   const { mark, dispatch } = useContext(AppContext);
 
   const setMark = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -12,7 +12,7 @@ export default function NewGame() {
   };
 
   return (
-    <section className="section-new-game-root">
+    <section className="menu-section-root">
       <div className="logo-container">
         <img src={Logo} alt="logo" className="logo" />
       </div>

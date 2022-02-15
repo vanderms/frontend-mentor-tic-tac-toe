@@ -1,6 +1,6 @@
 @use './mixins' as *;
 
-.section-new-game-root {
+.menu-section-root {
   @include size(rem(460), rem(471));
 
   @include media(mobile){

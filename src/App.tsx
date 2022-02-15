@@ -1,5 +1,5 @@
 import React from 'react';
-import NewGame from './modules/sections/new-game';
+import Menu from './modules/sections/menu';
 import AppProvider from './contexts/app-context';
 
 export default function App() { 
@@ -7,7 +7,7 @@ export default function App() {
   return (
     <main>
       <AppProvider>
-        <NewGame />
+        <Menu />
       </AppProvider>
     </main>
   );
