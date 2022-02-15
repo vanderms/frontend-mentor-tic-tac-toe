@@ -1,0 +1,133 @@
+@use './mixins' as *;
+
+.section-game-root {
+  @include size(rem(460), rem(623));
+
+  .first-row {
+    @include size(100%, rem(52));
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .logo {
+    @include size(auto, rem(32));
+  }
+
+  .turn {
+    @include size(rem(140), rem(52));
+    background-color: $semi-dark-navy;
+    border-radius: rem(10);
+    padding-bottom: 4px;
+
+    box-shadow: inset 0px -4px 0px #10212a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: rem(13);
+
+    font-weight: 700;
+    color: $silver;
+
+    &::before {
+      content: '';
+      background-image: url(/assets/icon-x-silver.svg);
+      @include size(rem(20), rem(20));
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: cover;
+    }
+  }
+
+  .restart {
+    @include size(rem(52), rem(52));
+    border: none;
+    background: $silver;
+    box-shadow: inset 0px -4px 0px #6b8997;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+
+  .table {
+    margin-top: rem(19);
+    display: grid;
+    grid-template-columns: repeat(3, rem(140));
+    justify-content: space-between;
+    gap: rem(20);
+
+    .cell {
+      @include size(rem(140), rem(140));
+      background-color: $semi-dark-navy;
+      padding-bottom: 8px;
+      border: none;
+      box-shadow: inset 0px -8px 0px #10212a;
+      border-radius: 15px;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      &.inactive:hover::before {
+        content: '';
+        @include size(rem(64), rem(64));
+        background-image: url(/assets/icon-x-outline.svg);
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+      }
+    }
+  }
+
+  .scoreboard {
+    margin-top: rem(19);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .score-item {
+      @include size(rem(140), rem(72));
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      border-radius: rem(15);
+      color: $dark-navy;
+
+      &.score-x {
+        background-color: $light-blue;
+      }
+      &.score-ties {
+        background-color: $silver;
+      }
+
+      &.score-o {
+        background-color: $light-yellow;
+      }
+
+      .title {
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 18px;
+        letter-spacing: 0.875px;
+      }
+
+      .value {
+        font-weight: 700;
+        font-size: 24px;
+        line-height: 30px;       
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+      }
+    }
+  }
+}
+
+.section-game-root.opponent-turn{
+  .turn::before{
+    background-image: url(/assets/icon-o-silver.svg);
+  }
+
+  .table .cell.inactive:hover::before{
+    background-image: url(/assets/icon-o-outline.svg);
+  }
+}
