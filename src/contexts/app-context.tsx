@@ -6,6 +6,7 @@ type Mark = 'X' | 'O';
 interface State {
   mark: Mark;
   opponent: Opponent;
+  playing: boolean;
 }
 
 export enum ActionType {
@@ -22,7 +23,7 @@ interface IAppContext extends State {
   dispatch?: (action: Action) => void;
 }
 
-const InitialState: State = { mark: 'O', opponent: 'CPU' };
+const InitialState: State = { mark: 'O', opponent: 'CPU', playing: false };
 
 const reducer = (state: State, action: Action): State => {
   const { type, payload } = action;
