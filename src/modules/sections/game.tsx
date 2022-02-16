@@ -1,19 +1,19 @@
 import Logo from '../../assets/logo.svg';
 import Restart from '../../assets/icon-restart.svg';
-import ScoreItem from './../components/score';
+import ScoreItem from '../components/score-item';
 
 export default function Game() {
   const table = ['', '', '', '', '', '', '', '', ''];
 
   return (
-    <div className="section-game-root opponent-turn">
+    <div className="section-game-root o-turn">
       <div className="first-row">
         <img src={Logo} alt="tic tac toe logo" />
         <div className="turn">
           <span>TURN</span>
         </div>
         <button className="restart" aria-label="restart game">
-          <img src={Restart} className='restart-icon' alt="restart icon" />
+          <img src={Restart} className="restart-icon" alt="restart icon" />
         </button>
       </div>
       <div className="table">
