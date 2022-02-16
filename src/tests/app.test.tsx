@@ -1,8 +1,22 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import App from '../app';
-import AppProvider from './../contexts/app-context';
+import AppProvider from '../contexts/app-context';
 
-describe('test new game menu section inputs and buttons', () => {
+describe('test app inicialization', () => {
+  it('should render the menu on inicialization', () => {
+    render(<App />, { wrapper: AppProvider });
+    const menu = screen.queryByTestId('menu');
+    expect(menu).toBeInTheDocument();
+  });
+
+  it('should not render the game on inicialization', () => {
+    render(<App />, { wrapper: AppProvider });
+    const game = screen.queryByTestId('game');
+    expect(game).not.toBeInTheDocument();
+  });
+});
+
+describe('test menu inputs and buttons', () => {
   it('should initialize "mark o" input checked', () => {
     render(<App />, { wrapper: AppProvider });
     const oRadio = screen.getByRole('radio', { name: 'choose mark o' });

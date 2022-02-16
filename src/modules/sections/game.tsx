@@ -6,7 +6,7 @@ export default function Game() {
   const table = ['', '', '', '', '', '', '', '', ''];
 
   return (
-    <div className="section-game-root o-turn">
+    <div className="section-game-root o-turn" data-testid='game' >
       <div className="first-row">
         <img src={Logo} alt="tic tac toe logo" />
         <div className="turn">

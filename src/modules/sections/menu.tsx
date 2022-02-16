@@ -12,7 +12,7 @@ export default function Menu() {
   };
 
   return (
-    <section className="menu-section-root">
+    <section className="menu-section-root" data-testid='menu'>
       <div className="logo-container">
         <img src={Logo} alt="logo" className="logo" />
       </div>
