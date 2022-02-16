@@ -7,12 +7,23 @@ import { AppContext, ActionType } from '../../contexts/app-context';
 export default function Menu() {
   const { mark, dispatch } = useContext(AppContext);
 
-  const setMark = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch!({ type: ActionType.SET_MARK, payload: e.target.value });
-  };
+  function setMark(e: React.ChangeEvent<HTMLInputElement>) {
+    dispatch!({
+      type: ActionType.SET_MARK,
+      payload: e.target.value as 'O' | 'X',
+    });
+  }
+
+  function startPlayingCpu() {
+    dispatch!({ type: ActionType.START_GAME, payload: 'CPU' });
+  }
+
+  function startPlayingPlayer() {
+    dispatch!({ type: ActionType.START_GAME, payload: 'PLAYER' });
+  }
 
   return (
-    <section className="menu-section-root" data-testid='menu'>
+    <section className="menu-section-root">
       <div className="logo-container">
         <img src={Logo} alt="logo" className="logo" />
       </div>
@@ -45,10 +56,10 @@ export default function Menu() {
         <div className="note">REMEMBER : X GOES FIRST</div>
       </div>
       <div className="start-game-buttons">
-        <button className="button vs-cpu">
+        <button className="button vs-cpu" onClick={startPlayingCpu}>
           <span>NEW GAME (VS CPU)</span>
         </button>
-        <button className="button vs-player">
+        <button className="button vs-player" onClick={startPlayingPlayer}>
           <span>NEW GAME (VS PLAYER)</span>
         </button>
       </div>

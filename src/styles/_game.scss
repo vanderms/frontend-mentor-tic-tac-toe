@@ -76,14 +76,17 @@ $mobile-cell-width: calc((87.2vw - #{rem(40)}) / 3);
 
   .table {
     margin-top: rem(19);
-    display: grid;
-    grid-template-columns: repeat(3, rem(140));
-    justify-content: space-between;
+    display: flex;
+    flex-direction: column;
     gap: rem(20);
+
+    .row {
+      display: flex;
+      justify-content: space-between;
+    }
 
     @include media(mobile) {
       margin-top: rem(64);
-      grid-template-columns: repeat(3, $mobile-cell-width);
     }
 
     .cell {
@@ -100,6 +103,24 @@ $mobile-cell-width: calc((87.2vw - #{rem(40)}) / 3);
 
       @include media(mobile) {
         @include size($mobile-cell-width, $mobile-cell-width);
+      }
+
+      &.cell-x::before {
+        content: '';
+        @include size(rem(64), rem(64));
+        background-image: url(/assets/icon-x.svg);
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+      }
+
+      &.cell-o::before {
+        content: '';
+        @include size(rem(64), rem(64));
+        background-image: url(/assets/icon-o.svg);
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
       }
 
       &.inactive:hover::before {
