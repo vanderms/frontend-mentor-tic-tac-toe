@@ -5,21 +5,13 @@ import { useContext } from 'react';
 import { AppContext, ActionType } from '../../contexts/app-context';
 
 export default function Menu() {
-  const { mark, dispatch } = useContext(AppContext);
+  const { mark, startGame, dispatch } = useContext(AppContext);
 
   function setMark(e: React.ChangeEvent<HTMLInputElement>) {
     dispatch!({
       type: ActionType.SET_MARK,
       payload: e.target.value as 'O' | 'X',
     });
-  }
-
-  function startPlayingCpu() {
-    dispatch!({ type: ActionType.START_GAME, payload: 'CPU' });
-  }
-
-  function startPlayingPlayer() {
-    dispatch!({ type: ActionType.START_GAME, payload: 'PLAYER' });
   }
 
   return (
@@ -56,10 +48,13 @@ export default function Menu() {
         <div className="note">REMEMBER : X GOES FIRST</div>
       </div>
       <div className="start-game-buttons">
-        <button className="button vs-cpu" onClick={startPlayingCpu}>
+        <button className="button vs-cpu" onClick={() => startGame!('CPU')}>
           <span>NEW GAME (VS CPU)</span>
         </button>
-        <button className="button vs-player" onClick={startPlayingPlayer}>
+        <button
+          className="button vs-player"
+          onClick={() => startGame!('PLAYER')}
+        >
           <span>NEW GAME (VS PLAYER)</span>
         </button>
       </div>
