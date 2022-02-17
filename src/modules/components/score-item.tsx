@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import { AppContext } from '../../contexts/app-context';
 
 export default function ScoreItem(props: { type: 'X' | 'O' | 'TIES' }) {
-  const {mark, opponent, scoreBoard } = useContext(AppContext);
+  const { mark, opponent, scoreBoard } = useContext(AppContext);
   const data = { title: props.type, value: scoreBoard.ties, order: ' center' };
 
   if (props.type !== 'TIES') {
@@ -15,10 +15,12 @@ export default function ScoreItem(props: { type: 'X' | 'O' | 'TIES' }) {
       data.value = scoreBoard.losses;
       data.order = ' right';
     }
-  }  
+  }
 
   return (
-    <div className={'score-item color-' + props.type.toLowerCase() + data.order }>
+    <div
+      className={'score-item color-' + props.type.toLowerCase() + data.order}
+    >
       <span className="title">{data.title}</span>
       <span className="value">{data.value}</span>
     </div>

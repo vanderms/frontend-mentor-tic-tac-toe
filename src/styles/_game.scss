@@ -202,6 +202,122 @@ $mobile-cell-width: calc((87.2vw - #{rem(40)}) / 3);
       }
     }
   }
+
+  .modal {
+    position: fixed;
+    inset: 0 0 0 0;
+    z-index: 1;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+    transition: opacity linear 1.2s;
+
+    &.hidden {
+      opacity: 0;
+      z-index: -999;
+    }
+
+    .container {
+      @include size(100%, rem(266));
+      background-color: $semi-dark-navy;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .message {
+      font-size: rem(16);
+      font-weight: 700;
+      color: $silver;
+      letter-spacing: 1px;
+
+      @include media(mobile) {
+        font-size: rem(14);
+        line-height: rem(18);
+        letter-spacing: 0.875px;
+      }
+    }
+
+    .title {
+      font-size: rem(40);
+      line-height: rem(50);
+      font-weight: 700;
+      color: $silver;
+      margin-bottom: rem(31);
+
+      @include media(mobile) {
+        font-size: rem(24);
+        line-height: rem(30);
+      }
+
+      &.icon {
+        display: flex;
+        align-items: center;
+        gap: rem(24);
+        height: rem(64);
+        margin-top: rem(16);
+        margin-bottom: rem(24);
+
+        @include media(mobile) {
+          height: rem(28);
+        }
+
+        &::before {
+          @include size(rem(64), rem(64));
+          content: '';
+          background-repeat: no-repeat;
+          background-position: center;
+          background-size: cover;
+
+          @include media(mobile) {
+            @include size(rem(28), rem(28));
+          }
+        }
+        &.x-wins {
+          color: $light-blue;
+          &::before {
+            background-image: url(/assets/icon-x.svg);
+          }
+        }
+
+        &.o-wins {
+          color: $light-yellow;
+          &::before {
+            background-image: url(/assets/icon-o.svg);
+          }
+        }
+      }
+    }
+
+    .buttons {
+      display: flex;
+      gap: rem(16);
+
+      button {
+        height: rem(52);
+        border: none;
+        padding: 0 rem(16);
+        border-radius: rem(10);
+        color: $dark-navy;
+        font-size: rem(16);
+        font-weight: 700;
+        letter-spacing: 1px;
+
+        &.primary {
+          background: $silver;
+          box-shadow: inset 0px -4px 0px #6b8997;
+        }
+
+        &.secondary {
+          background: $light-yellow;
+          box-shadow: inset 0px -4px 0px #cc8b13;
+        }
+      }
+    }
+  }
 }
 
 .section-game-root.o-turn {

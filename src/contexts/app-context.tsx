@@ -140,7 +140,7 @@ const AppProvider: React.FC = ({ children }) => {
     const update = TicTacToe.getInstance().update(row, col);
     dispatch!({ type: ActionType.UPDATE_GAME, payload: { ...update } });
 
-    if (state.opponent === 'CPU') {
+    if (state.opponent === 'CPU' && update.status === GameStatus.PLAYING) {
       setTimeout(() => {
         const update = TicTacToe.getInstance().update();
         dispatch!({ type: ActionType.UPDATE_GAME, payload: { ...update } });

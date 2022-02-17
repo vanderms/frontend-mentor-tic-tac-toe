@@ -7,9 +7,7 @@ import Cell from '../components/cell';
 import Modal from '../components/modal';
 import { GameStatus } from '../../lib/GameStatus';
 
-
 const R_MODAL_DEFAULT_STATE = {
-  hidden: true,
   message: '',
   title: '',
   className: '',
@@ -20,12 +18,13 @@ const R_MODAL_DEFAULT_STATE = {
 };
 
 export default function Game() {
-  const state = useContext(AppContext);  
+  const state = useContext(AppContext);
 
   let resultModal = { ...R_MODAL_DEFAULT_STATE };
+  let displayResultModal = false;
 
   if (state.status !== GameStatus.PLAYING) {
-    resultModal.hidden = false;
+    displayResultModal = true;
     resultModal.primaryOptionText = 'QUIT';
     resultModal.secondaryOptionText = 'NEXT ROUND';
     resultModal.primaryOptionHandler = state.quit!;
@@ -73,21 +72,21 @@ export default function Game() {
         ))}
       </div>
       <div className="scoreboard">
-        <ScoreItem type='X' />
-        <ScoreItem type='TIES' />
-        <ScoreItem type='O' />
+        <ScoreItem type="X" />
+        <ScoreItem type="TIES" />
+        <ScoreItem type="O" />
       </div>
-      <Modal
-        message={resultModal.message}
-        title={resultModal.title}
-        className={resultModal.className}
-        primaryOptionText={resultModal.primaryOptionText}
-        secondaryOptionText={resultModal.secondaryOptionText}
-        hidden={resultModal.hidden}
-        primaryOptionHandler={resultModal.primaryOptionHandler}
-        secondaryOptionHandler={resultModal.secondaryOptionHandler}
-      />
-     
+      {displayResultModal && (
+        <Modal
+          message={resultModal.message}
+          title={resultModal.title}
+          className={resultModal.className}
+          primaryOptionText={resultModal.primaryOptionText}
+          secondaryOptionText={resultModal.secondaryOptionText}
+          primaryOptionHandler={resultModal.primaryOptionHandler}
+          secondaryOptionHandler={resultModal.secondaryOptionHandler}
+        />
+      )}
     </div>
   );
 }
