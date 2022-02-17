@@ -1,4 +1,4 @@
-import { createContext, useEffect, useReducer } from 'react';
+import { createContext, useEffect, useReducer, useRef } from 'react';
 import TicTacToe from './../lib/TicTacToe';
 import { GameStatus } from './../lib/GameStatus';
 
@@ -116,7 +116,38 @@ const reducer = (state: State, action: Action): State => {
 export const AppContext = createContext<IAppContext>(initialState);
 
 const AppProvider: React.FC = ({ children }) => {
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const loading = useRef<boolean>(true);
+  let initial = initialState;
+
+  if (loading.current) {
+    const data = localStorage.getItem('tic-tac-toe');
+
+    if (data) {
+      initial = JSON.parse(data);
+      if (initial.status === GameStatus.PLAYING) {
+        if (initial.opponent === 'CPU') {          
+          TicTacToe.getInstance().startUnbeatableGame(initial.mark);
+        } else {
+          TicTacToe.getInstance().startTwoPlayerGame();
+        }
+        TicTacToe.getInstance().setBoard(
+          initial.board.map((row) => row.slice())
+        );
+        TicTacToe.getInstance().setCurrentPlayer(initial.turn);
+
+        if (initial.opponent === 'CPU' && initial.turn !== initial.mark) {
+          setTimeout(() => {
+            const update = TicTacToe.getInstance().update();
+            dispatch!({ type: ActionType.UPDATE_GAME, payload: { ...update } });
+          }, 100);
+        }
+      }
+    }
+    
+    loading.current = false;
+  }
+
+  const [state, dispatch] = useReducer(reducer, initial);
 
   useEffect(() => {
     localStorage.setItem('tic-tac-toe', JSON.stringify(state));

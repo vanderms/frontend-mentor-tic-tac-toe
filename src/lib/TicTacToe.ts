@@ -28,6 +28,14 @@ class TicTacToe {
     return gameBoard.map((row) => row.slice());
   }
 
+  setBoard(value: (string | null)[][]) {
+    this.game.setBoardSpaces(value);
+  }
+
+  setCurrentPlayer(player: ('X' | 'O')){
+    this.game.setCurrentPlayer(player.toLowerCase());
+  }
+
   get turn(): 'X' | 'O' {
     return this.game.getCurrentPlayer().toUpperCase();
   }
