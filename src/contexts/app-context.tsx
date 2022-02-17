@@ -68,6 +68,8 @@ if (data && false) {
 }
 
 const reducer = (state: State, action: Action): State => {
+  let scoreBoard = { ...initialState.scoreBoard };
+
   switch (action.type) {
     case ActionType.SET_MARK:
       return { ...state, mark: action.payload };
@@ -76,11 +78,12 @@ const reducer = (state: State, action: Action): State => {
       return {
         ...state,
         status: GameStatus.PLAYING,
+        scoreBoard,
         ...action.payload,
       };
 
     case ActionType.UPDATE_GAME:
-      let scoreBoard = { ...state.scoreBoard };
+      scoreBoard = { ...state.scoreBoard };
       if (action.payload.status !== GameStatus.PLAYING) {
         if (action.payload.status === GameStatus.TIE) {
           scoreBoard.ties++;
@@ -95,7 +98,12 @@ const reducer = (state: State, action: Action): State => {
       return { ...state, scoreBoard, ...action.payload };
 
     case ActionType.NEXT_ROUND:
-      return { ...state, status: GameStatus.PLAYING, ...action.payload };
+      return {
+        ...state,
+        status: GameStatus.PLAYING,
+        scoreBoard: { ...state.scoreBoard },
+        ...action.payload,
+      };
 
     case ActionType.QUIT:
       return { ...initialState };
@@ -132,7 +140,7 @@ const AppProvider: React.FC = ({ children }) => {
       setTimeout(() => {
         const update = TicTacToe.getInstance().update();
         dispatch!({ type: ActionType.UPDATE_GAME, payload: { ...update } });
-      }, 500);
+      }, 100);
     }
   }
 

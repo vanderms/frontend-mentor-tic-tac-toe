@@ -2,12 +2,12 @@ import Logo from '../../assets/logo.svg';
 import Restart from '../../assets/icon-restart.svg';
 import ScoreItem from '../components/score-item';
 import { AppContext } from '../../contexts/app-context';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import Cell from '../components/cell';
 import Modal from '../components/modal';
 import { GameStatus } from '../../lib/GameStatus';
 
-const R_MODAL_DEFAULT_STATE = {
+const RESULT_MODAL_DEFAULT = {
   message: '',
   title: '',
   className: '',
@@ -19,8 +19,10 @@ const R_MODAL_DEFAULT_STATE = {
 
 export default function Game() {
   const state = useContext(AppContext);
+  const [displayRestartModal, setDisplayRestartModal] =
+    useState<boolean>(false);
 
-  let resultModal = { ...R_MODAL_DEFAULT_STATE };
+  let resultModal = { ...RESULT_MODAL_DEFAULT };
   let displayResultModal = false;
 
   if (state.status !== GameStatus.PLAYING) {
@@ -58,7 +60,11 @@ export default function Game() {
         <div className="turn">
           <span>TURN</span>
         </div>
-        <button className="restart" aria-label="restart game">
+        <button
+          className="restart"
+          onClick={() => setDisplayRestartModal(true)}
+          aria-label="restart game"
+        >
           <img src={Restart} className="restart-icon" alt="restart icon" />
         </button>
       </div>
@@ -85,6 +91,20 @@ export default function Game() {
           secondaryOptionText={resultModal.secondaryOptionText}
           primaryOptionHandler={resultModal.primaryOptionHandler}
           secondaryOptionHandler={resultModal.secondaryOptionHandler}
+        />
+      )}
+      {displayRestartModal && (
+        <Modal
+          message=""
+          title="RESTART GAME?"
+          className="modal-restart"
+          primaryOptionText="NO, CANCEL"
+          secondaryOptionText="YES, RESTART"
+          primaryOptionHandler={() => setDisplayRestartModal(false)}
+          secondaryOptionHandler={() => {
+            state.startGame!(state.opponent);
+            setDisplayRestartModal(false);
+          }}
         />
       )}
     </div>

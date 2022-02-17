@@ -11,18 +11,17 @@ interface Props {
 }
 
 export default function Modal(props: Props) {
-  const [hidden, setHidden] = useState<boolean>(
-    props.className !== 'restart' && props.className !== 'tie'
-  );
+  const [hidden, setHidden] = useState<boolean>(props.className !== 'modal-restart');
 
   useEffect(() => {
     setTimeout(() => {
       setHidden(false);
-    }, 800);
+    }, 1000);
   }, []);
 
   return (
     <article className={`modal ${hidden ? 'hidden' : ''}`}>
+      <div className="backdrop"></div>
       <div className="container">
         {props.message && <div className="message">{props.message}</div>}
         <h2
