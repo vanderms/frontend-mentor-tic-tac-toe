@@ -125,7 +125,7 @@ const AppProvider: React.FC = ({ children }) => {
     if (data) {
       initial = JSON.parse(data);
       if (initial.status === GameStatus.PLAYING) {
-        if (initial.opponent === 'CPU') {          
+        if (initial.opponent === 'CPU') {
           TicTacToe.getInstance().startUnbeatableGame(initial.mark);
         } else {
           TicTacToe.getInstance().startTwoPlayerGame();
@@ -143,7 +143,6 @@ const AppProvider: React.FC = ({ children }) => {
         }
       }
     }
-    
     loading.current = false;
   }
 
