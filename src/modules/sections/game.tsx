@@ -4,25 +4,51 @@ import ScoreItem from '../components/score-item';
 import { AppContext } from '../../contexts/app-context';
 import { useContext } from 'react';
 import Cell from '../components/cell';
+import Modal from '../components/modal';
+import { GameStatus } from '../../lib/GameStatus';
 
-function getScoreTitles(mark: string, opponent: string): string[] {
-  let xScoreTitle: string, oScoreTitle: string;
 
-  if (opponent === 'CPU') {
-    xScoreTitle = mark === 'X' ? 'X (YOU)' : 'X (CPU)';
-    oScoreTitle = mark === 'X' ? 'O (CPU)' : 'O (YOU)';
-  } else {
-    xScoreTitle = mark === 'X' ? 'X (P1)' : 'X (P2)';
-    oScoreTitle = mark === 'X' ? 'O (P2)' : 'O (P1)';
-  }
-  return [xScoreTitle, oScoreTitle];
-}
+const R_MODAL_DEFAULT_STATE = {
+  hidden: true,
+  message: '',
+  title: '',
+  className: '',
+  primaryOptionText: '',
+  secondaryOptionText: '',
+  primaryOptionHandler: () => {},
+  secondaryOptionHandler: () => {},
+};
 
 export default function Game() {
-  const state = useContext(AppContext);
+  const state = useContext(AppContext);  
 
-  const [xScoreTitle, oScoreTitle] = getScoreTitles(state.mark, state.opponent);
-  
+  let resultModal = { ...R_MODAL_DEFAULT_STATE };
+
+  if (state.status !== GameStatus.PLAYING) {
+    resultModal.hidden = false;
+    resultModal.primaryOptionText = 'QUIT';
+    resultModal.secondaryOptionText = 'NEXT ROUND';
+    resultModal.primaryOptionHandler = state.quit!;
+    resultModal.secondaryOptionHandler = state.nextRound!;
+
+    if (state.status === GameStatus.TIE) {
+      resultModal.message = '';
+      resultModal.title = 'ROUND TIED';
+      resultModal.className = 'tie';
+    } else {
+      resultModal.className =
+        state.status === GameStatus.WINNER_X ? 'x-wins' : 'o-wins';
+      resultModal.title = 'TAKES THE ROUND';
+
+      if (state.status === state.mark) {
+        resultModal.message =
+          state.opponent === 'CPU' ? 'YOU WON!' : 'PLAYER 1 WINS!';
+      } else {
+        resultModal.message =
+          state.opponent === 'CPU' ? 'OH NO, YOU LOST…' : 'PLAYER 2 WINS!';
+      }
+    }
+  }
 
   return (
     <div
@@ -47,10 +73,21 @@ export default function Game() {
         ))}
       </div>
       <div className="scoreboard">
-        <ScoreItem title={xScoreTitle} value={state.wins} />
-        <ScoreItem title="TIES" value={state.ties} />
-        <ScoreItem title={oScoreTitle} value={state.losses} />
+        <ScoreItem type='X' />
+        <ScoreItem type='TIES' />
+        <ScoreItem type='O' />
       </div>
+      <Modal
+        message={resultModal.message}
+        title={resultModal.title}
+        className={resultModal.className}
+        primaryOptionText={resultModal.primaryOptionText}
+        secondaryOptionText={resultModal.secondaryOptionText}
+        hidden={resultModal.hidden}
+        primaryOptionHandler={resultModal.primaryOptionHandler}
+        secondaryOptionHandler={resultModal.secondaryOptionHandler}
+      />
+     
     </div>
   );
 }

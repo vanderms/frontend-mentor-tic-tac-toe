@@ -59,7 +59,7 @@ class TicTacToe {
           status = GameStatus.WINNER_O;
           break;
         default:
-          status = GameStatus.DRAW;
+          status = GameStatus.TIE;
           break;
       }
     }

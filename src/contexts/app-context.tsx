@@ -9,6 +9,8 @@ export enum ActionType {
   SET_MARK = 'SET_MARK',
   START_GAME = 'START_GAME',
   UPDATE_GAME = 'UPDATE_GAME',
+  NEXT_ROUND = 'NEXT_ROUND',
+  QUIT = 'QUIT',
 }
 
 interface State {
@@ -17,9 +19,7 @@ interface State {
   status: GameStatus;
   board: (string | null)[][];
   turn: Mark;
-  wins: number;
-  ties: number;
-  losses: number;
+  scoreBoard: { wins: number; ties: number; losses: number };
 }
 
 type Action =
@@ -31,12 +31,21 @@ type Action =
   | {
       type: ActionType.UPDATE_GAME;
       payload: { board: (string | null)[][]; turn: Mark; status: GameStatus };
+    }
+  | {
+      type: ActionType.NEXT_ROUND;
+      payload: { board: (string | null)[][]; turn: Mark; mark: Mark };
+    }
+  | {
+      type: ActionType.QUIT;
     };
 
 interface IAppContext extends State {
   dispatch?: (action: Action) => void;
   startGame?: (opponent: Opponent) => void;
   playMove?: (row: number, col: number) => void;
+  nextRound?: () => void;
+  quit?: () => void;
 }
 
 const data = localStorage.getItem('tic-tac-toe');
@@ -54,9 +63,7 @@ if (data && false) {
       [null, null, null],
     ],
     turn: 'X',
-    wins: 0,
-    ties: 0,
-    losses: 0,
+    scoreBoard: { wins: 0, ties: 0, losses: 0 },
   };
 }
 
@@ -73,7 +80,25 @@ const reducer = (state: State, action: Action): State => {
       };
 
     case ActionType.UPDATE_GAME:
-      return { ...state, ...action.payload };
+      let scoreBoard = { ...state.scoreBoard };
+      if (action.payload.status !== GameStatus.PLAYING) {
+        if (action.payload.status === GameStatus.TIE) {
+          scoreBoard.ties++;
+        } else {
+          if (state.mark === action.payload.status) {
+            scoreBoard.wins++;
+          } else {
+            scoreBoard.losses++;
+          }
+        }
+      }
+      return { ...state, scoreBoard, ...action.payload };
+
+    case ActionType.NEXT_ROUND:
+      return { ...state, status: GameStatus.PLAYING, ...action.payload };
+
+    case ActionType.QUIT:
+      return { ...initialState };
 
     default:
       return state;
@@ -84,6 +109,10 @@ export const AppContext = createContext<IAppContext>(initialState);
 
 const AppProvider: React.FC = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
+
+  useEffect(() => {
+    localStorage.setItem('tic-tac-toe', JSON.stringify(state));
+  }, [state]);
 
   function startGame(opponent: Opponent) {
     if (opponent === 'CPU') {
@@ -99,7 +128,7 @@ const AppProvider: React.FC = ({ children }) => {
       payload: { board, turn, opponent },
     });
 
-    if (state.opponent === 'CPU' && state.mark === 'O') {
+    if (opponent === 'CPU' && state.mark === 'O') {
       setTimeout(() => {
         const update = TicTacToe.getInstance().update();
         dispatch!({ type: ActionType.UPDATE_GAME, payload: { ...update } });
@@ -119,12 +148,38 @@ const AppProvider: React.FC = ({ children }) => {
     }
   }
 
-  useEffect(() => {
-    localStorage.setItem('tic-tac-toe', JSON.stringify(state));
-  }, [state]);
+  function nextRound() {
+    const mark: Mark = state.mark === 'O' ? 'X' : 'O';
+
+    if (state.opponent === 'CPU') {
+      TicTacToe.getInstance().startUnbeatableGame(mark);
+    } else {
+      TicTacToe.getInstance().startTwoPlayerGame();
+    }
+
+    const turn: Mark = TicTacToe.getInstance().turn;
+    const board = TicTacToe.getInstance().board;
+    dispatch!({
+      type: ActionType.NEXT_ROUND,
+      payload: { board, turn, mark },
+    });
+
+    if (state.opponent === 'CPU' && mark === 'O') {
+      setTimeout(() => {
+        const update = TicTacToe.getInstance().update();
+        dispatch!({ type: ActionType.UPDATE_GAME, payload: { ...update } });
+      }, 500);
+    }
+  }
+
+  function quit() {
+    dispatch!({ type: ActionType.QUIT });
+  }
 
   return (
-    <AppContext.Provider value={{ ...state, dispatch, startGame, playMove }}>
+    <AppContext.Provider
+      value={{ ...state, dispatch, startGame, playMove, nextRound, quit }}
+    >
       {children}
     </AppContext.Provider>
   );

@@ -123,7 +123,7 @@ $mobile-cell-width: calc((87.2vw - #{rem(40)}) / 3);
         background-repeat: no-repeat;
       }
 
-      &.inactive:hover::before {
+      &.inactive:not(:disabled):hover::before {
         content: '';
         @include size(rem(64), rem(64));
         background-image: url(/assets/icon-x-outline.svg);
@@ -153,15 +153,27 @@ $mobile-cell-width: calc((87.2vw - #{rem(40)}) / 3);
         @include size($mobile-cell-width, rem(64));
       }
 
-      &:first-of-type {
+      &.color-x {
         background-color: $light-blue;
       }
-      &:nth-of-type(2) {
+      &.color-ties {
         background-color: $silver;
       }
 
-      &:last-of-type {
+      &.color-o {
         background-color: $light-yellow;
+      }
+
+      &.left {
+        order: 1;
+      }
+
+      &.center {
+        order: 2;
+      }
+
+      &.right {
+        order: 3;
       }
 
       .title {
@@ -197,7 +209,7 @@ $mobile-cell-width: calc((87.2vw - #{rem(40)}) / 3);
     background-image: url(/assets/icon-o-silver.svg);
   }
 
-  .table .cell.inactive:hover::before {
+  .table .cell.inactive:not(:disabled):hover::before {
     background-image: url(/assets/icon-o-outline.svg);
   }
 }
