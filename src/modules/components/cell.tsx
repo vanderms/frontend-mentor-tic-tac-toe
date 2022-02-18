@@ -6,12 +6,17 @@ interface Props {
   value: string | null;
   row: number;
   col: number;
+  winnerLine: number[][]
 }
 
-const Cell: React.FC<Props> = ({ value, row, col }) => {
+const Cell: React.FC<Props> = ({ value, row, col, winnerLine }) => {
   const { mark, opponent, turn, playMove, status } = useContext(AppContext);
 
-  const className = value === null ? 'inactive ' : 'cell-' + value;
+  let className = value === null ? 'inactive ' : 'cell-' + value;
+  if(winnerLine.find(cell => cell[0] === row && cell[1] === col)){
+    className += ' cell-winner';
+  }
+
   const disabled =
     value !== null ||
     (opponent === 'CPU' && mark !== turn) ||

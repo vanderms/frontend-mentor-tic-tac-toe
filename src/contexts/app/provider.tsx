@@ -14,7 +14,7 @@ const AppProvider: React.FC = ({ children }) => {
 
     if (data) {
       initial = JSON.parse(data);
-      if (initial.status === GameStatus.PLAYING) {
+      if (initial.status !== GameStatus.MENU) {
         if (initial.opponent === 'CPU') {
           TicTacToe.getInstance().startUnbeatableGame(initial.mark);
         } else {
@@ -25,7 +25,11 @@ const AppProvider: React.FC = ({ children }) => {
         );
         TicTacToe.getInstance().setCurrentPlayer(initial.turn);
 
-        if (initial.opponent === 'CPU' && initial.turn !== initial.mark) {
+        if (
+          initial.status === GameStatus.PLAYING &&
+          initial.opponent === 'CPU' &&
+          initial.turn !== initial.mark
+        ) {
           setTimeout(() => {
             const update = TicTacToe.getInstance().update();
             dispatch!({ type: ActionType.UPDATE_GAME, payload: { ...update } });

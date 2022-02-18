@@ -16,7 +16,7 @@ export default function Modal(props: Props) {
   useEffect(() => {
     setTimeout(() => {
       setHidden(false);
-    }, 1000);
+    }, 1200);
   }, []);
 
   return (

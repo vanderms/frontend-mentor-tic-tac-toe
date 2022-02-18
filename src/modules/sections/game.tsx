@@ -6,6 +6,7 @@ import { useContext, useState } from 'react';
 import Cell from '../components/cell';
 import Modal from '../components/modal';
 import { GameStatus } from '../../contexts/app/types';
+import TicTacToe from '../../lib/TicTacToe';
 
 const RESULT_MODAL_DEFAULT = {
   message: '',
@@ -24,6 +25,7 @@ export default function Game() {
 
   let resultModal = { ...RESULT_MODAL_DEFAULT };
   let displayResultModal = false;
+  let winnerLine: number[][] = [];
 
   if (state.status !== GameStatus.PLAYING) {
     displayResultModal = true;
@@ -49,6 +51,8 @@ export default function Game() {
           state.opponent === 'CPU' ? 'OH NO, YOU LOST…' : 'PLAYER 2 WINS!';
       }
     }
+    console.log('game.tsx');    
+    winnerLine = TicTacToe.getInstance().getWinnerLine() as number[][];
   }
 
   return (
@@ -72,7 +76,13 @@ export default function Game() {
         {state.board.map((row: (string | null)[], x: number) => (
           <div className="row" key={x}>
             {row.map((value: string | null, y: number) => (
-              <Cell value={value} row={x} col={y} key={`${x}${y}`} />
+              <Cell
+                winnerLine={winnerLine}
+                value={value}
+                row={x}
+                col={y}
+                key={`${x}${y}`}
+              />
             ))}
           </div>
         ))}

@@ -105,6 +105,32 @@ $mobile-cell-width: calc((87.2vw - #{rem(40)}) / 3);
         @include size($mobile-cell-width, $mobile-cell-width);
       }
 
+      &.cell-x.cell-winner {
+        background-color: $light-blue;
+      }
+
+      &.cell-x.cell-winner::before {
+        content: '';
+        @include size(rem(64), rem(64));
+        background-image: url(/assets/icon-x-dark.svg);
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+      }
+
+      &.cell-o.cell-winner {
+        background-color: $light-yellow;
+      }
+
+      &.cell-o.cell-winner::before {
+        content: '';
+        @include size(rem(64), rem(64));
+        background-image: url(/assets/icon-o-dark.svg);
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+      }
+
       &.cell-x::before {
         content: '';
         @include size(rem(64), rem(64));
@@ -211,7 +237,6 @@ $mobile-cell-width: calc((87.2vw - #{rem(40)}) / 3);
     display: flex;
     align-items: center;
     justify-content: center;
-   
 
     &.hidden {
       display: none;

@@ -48,6 +48,37 @@ class TicTacToe {
     this.game = ticTacToe.twoPlayerGame();
   }
 
+  getWinnerLine() : number[][] | undefined {
+    if(!this.game.isGameOver()){
+      return undefined;
+    }
+    
+    const winner = this.game.getState().split(' ')[0];
+    
+    if(winner === 'Draw'){
+      return undefined;
+    }
+
+    const board: (string | null)[][] = this.game.getBoardSpaces();
+
+    const possibilities = [
+      [[0, 0], [0, 1], [0, 2]],
+      [[1, 0], [1, 1], [1, 2]],
+      [[2, 0], [2, 1], [2, 2]],
+      [[0, 0], [1, 0], [2, 0]],
+      [[0, 1], [1, 1], [2, 1]],
+      [[0, 2], [1, 2], [2, 2]],
+      [[0, 0], [1, 1], [2, 2]],
+      [[0, 2], [1, 1], [2, 0]],
+    ];
+
+    return possibilities.find((line) => {
+      return line.every(cell => {
+        return board[cell[0]][cell[1]] === winner;
+      })
+    });
+  }
+
   update(row?: number, col?: number): ITicTacToeUpdate {
     this.game.turn(row, col);
 
@@ -76,3 +107,5 @@ class TicTacToe {
 }
 
 export default TicTacToe;
+
+
