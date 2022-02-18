@@ -1,123 +1,13 @@
 import { createContext, useEffect, useReducer, useRef } from 'react';
-import TicTacToe from './../lib/TicTacToe';
-import { GameStatus } from './../lib/GameStatus';
+import TicTacToe from '../../lib/TicTacToe';
+import { GameStatus, IContext, ActionType, Opponent, Mark } from './types';
+import { AppReducer, INITIAL_STATE } from './reducer';
 
-type Opponent = 'PLAYER' | 'CPU';
-type Mark = 'X' | 'O';
-
-export enum ActionType {
-  SET_MARK = 'SET_MARK',
-  START_GAME = 'START_GAME',
-  UPDATE_GAME = 'UPDATE_GAME',
-  NEXT_ROUND = 'NEXT_ROUND',
-  QUIT = 'QUIT',
-}
-
-interface State {
-  mark: Mark;
-  opponent: Opponent;
-  status: GameStatus;
-  board: (string | null)[][];
-  turn: Mark;
-  scoreBoard: { wins: number; ties: number; losses: number };
-}
-
-type Action =
-  | { type: ActionType.SET_MARK; payload: Mark }
-  | {
-      type: ActionType.START_GAME;
-      payload: { board: (string | null)[][]; turn: Mark; opponent: Opponent };
-    }
-  | {
-      type: ActionType.UPDATE_GAME;
-      payload: { board: (string | null)[][]; turn: Mark; status: GameStatus };
-    }
-  | {
-      type: ActionType.NEXT_ROUND;
-      payload: { board: (string | null)[][]; turn: Mark; mark: Mark };
-    }
-  | {
-      type: ActionType.QUIT;
-    };
-
-interface IAppContext extends State {
-  dispatch?: (action: Action) => void;
-  startGame?: (opponent: Opponent) => void;
-  playMove?: (row: number, col: number) => void;
-  nextRound?: () => void;
-  quit?: () => void;
-}
-
-const data = localStorage.getItem('tic-tac-toe');
-let initialState: State;
-if (data && false) {
-  //initialState = JSON.parse(data) as State;
-} else {
-  initialState = {
-    mark: 'O',
-    opponent: 'CPU',
-    status: GameStatus.MENU,
-    board: [
-      [null, null, null],
-      [null, null, null],
-      [null, null, null],
-    ],
-    turn: 'X',
-    scoreBoard: { wins: 0, ties: 0, losses: 0 },
-  };
-}
-
-const reducer = (state: State, action: Action): State => {
-  let scoreBoard = { ...initialState.scoreBoard };
-
-  switch (action.type) {
-    case ActionType.SET_MARK:
-      return { ...state, mark: action.payload };
-
-    case ActionType.START_GAME:
-      return {
-        ...state,
-        status: GameStatus.PLAYING,
-        scoreBoard,
-        ...action.payload,
-      };
-
-    case ActionType.UPDATE_GAME:
-      scoreBoard = { ...state.scoreBoard };
-      if (action.payload.status !== GameStatus.PLAYING) {
-        if (action.payload.status === GameStatus.TIE) {
-          scoreBoard.ties++;
-        } else {
-          if (state.mark === action.payload.status) {
-            scoreBoard.wins++;
-          } else {
-            scoreBoard.losses++;
-          }
-        }
-      }
-      return { ...state, scoreBoard, ...action.payload };
-
-    case ActionType.NEXT_ROUND:
-      return {
-        ...state,
-        status: GameStatus.PLAYING,
-        scoreBoard: { ...state.scoreBoard },
-        ...action.payload,
-      };
-
-    case ActionType.QUIT:
-      return { ...initialState };
-
-    default:
-      return state;
-  }
-};
-
-export const AppContext = createContext<IAppContext>(initialState);
+export const AppContext = createContext<IContext>(INITIAL_STATE);
 
 const AppProvider: React.FC = ({ children }) => {
   const loading = useRef<boolean>(true);
-  let initial = initialState;
+  let initial = INITIAL_STATE;
 
   if (loading.current) {
     const data = localStorage.getItem('tic-tac-toe');
@@ -146,11 +36,18 @@ const AppProvider: React.FC = ({ children }) => {
     loading.current = false;
   }
 
-  const [state, dispatch] = useReducer(reducer, initial);
+  const [state, dispatch] = useReducer(AppReducer, initial);
 
   useEffect(() => {
     localStorage.setItem('tic-tac-toe', JSON.stringify(state));
   }, [state]);
+
+  function setMark(mark: Mark) {
+    dispatch!({
+      type: ActionType.SET_MARK,
+      payload: mark,
+    });
+  }
 
   function startGame(opponent: Opponent) {
     if (opponent === 'CPU') {
@@ -216,7 +113,7 @@ const AppProvider: React.FC = ({ children }) => {
 
   return (
     <AppContext.Provider
-      value={{ ...state, dispatch, startGame, playMove, nextRound, quit }}
+      value={{ ...state, setMark, startGame, playMove, nextRound, quit }}
     >
       {children}
     </AppContext.Provider>

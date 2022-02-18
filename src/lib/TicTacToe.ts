@@ -1,6 +1,6 @@
 //@ts-ignore
 import ticTacToe from 'tictactoe-freecodecamp';
-import { GameStatus } from './GameStatus';
+import { GameStatus } from '../contexts/app/types';
 
 interface ITicTacToeUpdate {
   board: (string | null)[][];
@@ -32,7 +32,7 @@ class TicTacToe {
     this.game.setBoardSpaces(value);
   }
 
-  setCurrentPlayer(player: ('X' | 'O')){
+  setCurrentPlayer(player: 'X' | 'O') {
     this.game.setCurrentPlayer(player.toLowerCase());
   }
 

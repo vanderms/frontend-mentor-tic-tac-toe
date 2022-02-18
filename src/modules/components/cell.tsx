@@ -1,6 +1,6 @@
-import { AppContext } from '../../contexts/app-context';
+import { AppContext } from '../../contexts/app/provider';
 import { useContext } from 'react';
-import { GameStatus } from '../../lib/GameStatus';
+import { GameStatus } from '../../contexts/app/types';
 
 interface Props {
   value: string | null;

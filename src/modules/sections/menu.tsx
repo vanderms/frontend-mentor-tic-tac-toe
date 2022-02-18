@@ -2,17 +2,10 @@ import Logo from '../../assets/logo.svg';
 import IconX from '../svg/icon-x';
 import IconO from '../svg/icon-o';
 import { useContext } from 'react';
-import { AppContext, ActionType } from '../../contexts/app-context';
+import { AppContext } from '../../contexts/app/provider';
 
 export default function Menu() {
-  const { mark, startGame, dispatch } = useContext(AppContext);
-
-  function setMark(e: React.ChangeEvent<HTMLInputElement>) {
-    dispatch!({
-      type: ActionType.SET_MARK,
-      payload: e.target.value as 'O' | 'X',
-    });
-  }
+  const { mark, startGame, setMark } = useContext(AppContext);
 
   return (
     <section className="menu-section-root">
@@ -26,7 +19,7 @@ export default function Menu() {
             type="radio"
             id="choose-x"
             checked={mark === 'X'}
-            onChange={setMark}
+            onChange={(e) => setMark!(e.target.value as 'O' | 'X')}
             value="X"
             name="pick-mark"
           />
@@ -36,7 +29,7 @@ export default function Menu() {
           <input
             type="radio"
             id="choose-o"
-            onChange={setMark}
+            onChange={(e) => setMark!(e.target.value as 'O' | 'X')}
             checked={mark === 'O'}
             value="O"
             name="pick-mark"

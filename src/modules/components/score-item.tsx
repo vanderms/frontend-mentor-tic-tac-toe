@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { AppContext } from '../../contexts/app-context';
+import { AppContext } from '../../contexts/app/provider';
 
 export default function ScoreItem(props: { type: 'X' | 'O' | 'TIES' }) {
   const { mark, opponent, scoreBoard } = useContext(AppContext);

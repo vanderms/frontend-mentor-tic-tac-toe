@@ -1,11 +1,11 @@
 import Logo from '../../assets/logo.svg';
 import Restart from '../../assets/icon-restart.svg';
 import ScoreItem from '../components/score-item';
-import { AppContext } from '../../contexts/app-context';
+import { AppContext } from '../../contexts/app/provider';
 import { useContext, useState } from 'react';
 import Cell from '../components/cell';
 import Modal from '../components/modal';
-import { GameStatus } from '../../lib/GameStatus';
+import { GameStatus } from '../../contexts/app/types';
 
 const RESULT_MODAL_DEFAULT = {
   message: '',
