@@ -11,7 +11,9 @@ interface Props {
 }
 
 export default function Modal(props: Props) {
-  const [hidden, setHidden] = useState<boolean>(props.className !== 'modal-restart');
+  const [hidden, setHidden] = useState<boolean>(
+    props.className !== 'modal-restart'
+  );
 
   useEffect(() => {
     setTimeout(() => {

@@ -48,15 +48,15 @@ class TicTacToe {
     this.game = ticTacToe.twoPlayerGame();
   }
 
-  getWinnerLine() : number[][] | undefined {
+  getWinnerLine() : number[][] {
     if(!this.game.isGameOver()){
-      return undefined;
+      return [];
     }
     
     const winner = this.game.getState().split(' ')[0];
     
     if(winner === 'Draw'){
-      return undefined;
+      return [];
     }
 
     const board: (string | null)[][] = this.game.getBoardSpaces();
@@ -72,11 +72,13 @@ class TicTacToe {
       [[0, 2], [1, 1], [2, 0]],
     ];
 
-    return possibilities.find((line) => {
+    const result = possibilities.find((line) => {
       return line.every(cell => {
         return board[cell[0]][cell[1]] === winner;
       })
     });
+
+    return result || [];
   }
 
   update(row?: number, col?: number): ITicTacToeUpdate {

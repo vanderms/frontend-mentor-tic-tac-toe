@@ -51,7 +51,7 @@ export default function Game() {
           state.opponent === 'CPU' ? 'OH NO, YOU LOST…' : 'PLAYER 2 WINS!';
       }
     }
-    console.log('game.tsx');    
+    
     winnerLine = TicTacToe.getInstance().getWinnerLine() as number[][];
   }
 
